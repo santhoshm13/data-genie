@@ -1,0 +1,7 @@
+/api/gemini/*  https://generativelanguage.googleapis.com/:splat  200
+/api/groq/*  https://api.groq.com/:splat  200
+/api/openrouter/*  https://openrouter.ai/:splat  200
+/api/cerebras/*  https://api.cerebras.ai/:splat  200
+/api/sambanova/*  https://api.sambanova.ai/:splat  200
+/api/hf/*  https://api-inference.huggingface.co/:splat  200
+/* /index.html 200
