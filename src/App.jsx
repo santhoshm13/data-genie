@@ -836,7 +836,9 @@ DO NOT output any other text if you are switching tabs. Only switch to tabs that
   return data.filter(row => row.Department === 'CSE');
 }
 \`\`\`
-11. CRITICAL DIRECTIVE: If the user requests to transform data (e.g., "give only the first 10 rows", "remove the last column"), YOU MUST IMMEDIATELY STOP. DO NOT write any text summary. DO NOT analyze the data verbally. Your ENTIRE RESPONSE MUST ONLY consist of the \`\`\`auto_transform_copy\`\`\` or \`\`\`auto_transform_inplace\`\`\` or \`\`\`transform_dataset\`\`\` code block. If you write a descriptive summary instead of the code block, YOU HAVE FAILED.
+11. CRITICAL DIRECTIVE — DISTINGUISH ACTION REQUESTS FROM CODE QUESTIONS:
+   - If the user asks you to ACTUALLY transform/filter/modify THEIR connected dataset (e.g. 'give only the first 10 rows', 'remove the last column', 'filter my data where...') AND a dataset is currently loaded, respond ONLY with the auto_transform_copy/auto_transform_inplace/transform_dataset code block as before.
+   - If the user asks for CODE, an EXAMPLE, or HOW something is done in Python/pandas/SQL/Excel (e.g. 'give me the code for removing nulls', 'how do I filter rows in Python', 'show me a pandas example'), this is an educational request, NOT an action request — respond normally with an explanation and a code snippet in a regular \`\`\`python code block, even if no dataset is loaded. Do NOT attempt auto_transform_copy for these requests.
 12. For Multi-file Joins: When generating a transformation function (e.g. \`\`\`transform_dataset\`), if you see multiple datasets in the context, output a function that takes a \`datasets\` dictionary object. Example:
 \`\`\`transform_dataset
 (datasets) => {
@@ -988,10 +990,9 @@ WARNING: The sample rows provided above are ONLY for schema reference. DO NOT at
                   aiText += "\n\n*(Failed to apply transform: " + err.message + ")*";
                }
             }
-         } else if (!currentDataset?.fullData) {
-            aiText += `\n\n*(DEBUG: AI outputted auto_transform_copy but currentDataset?.fullData is falsy. currentDataset: ${currentDataset ? 'exists' : 'null'})*`;
-         } else if (!match) {
-            aiText += `\n\n*(DEBUG: AI outputted auto_transform_copy but regex match failed.)*`;
+         } else if (!currentDataset?.fullData || !match) {
+            console.warn('[auto_transform_copy] Failed - no dataset loaded or regex match failed', { currentDataset, aiText });
+            aiText = "I tried to apply that directly to your data, but I don't see a dataset currently loaded. Could you upload or connect a file first? In the meantime, here's the general approach:\n\n" + aiText.replace(/```(auto_transform_copy|auto_transform_inplace)/gi, '```javascript');
          }
       }
       if (aiText.includes('```copy_spreadsheet')) {
