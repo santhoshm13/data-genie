@@ -261,6 +261,33 @@ const TransformationWidget = ({ codeString, datasets, activeDatasetName }) => {
 };
 
 function MainApp({ user }) {
+  useEffect(() => {
+    // Lock body/html scroll when MainApp (chat screen) is active to prevent mobile bouncing
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalBodyHeight = document.body.style.height;
+    const originalBodyOverscroll = document.body.style.overscrollBehavior;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    const originalHtmlHeight = document.documentElement.style.height;
+    const originalHtmlOverscroll = document.documentElement.style.overscrollBehavior;
+
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100%';
+    document.body.style.overscrollBehavior = 'none';
+    document.documentElement.style.overflow = 'hidden';
+    document.documentElement.style.height = '100%';
+    document.documentElement.style.overscrollBehavior = 'none';
+
+    return () => {
+      // Restore previous styles when unmounted (e.g. going back to landing page)
+      document.body.style.overflow = originalBodyOverflow;
+      document.body.style.height = originalBodyHeight;
+      document.body.style.overscrollBehavior = originalBodyOverscroll;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      document.documentElement.style.height = originalHtmlHeight;
+      document.documentElement.style.overscrollBehavior = originalHtmlOverscroll;
+    };
+  }, []);
+
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -397,6 +424,15 @@ function MainApp({ user }) {
       setRecentChats([]);
       return;
     }
+    
+    // Explicitly reset states to guarantee a clean welcome screen on login
+    setMessages([]);
+    setChatId(null);
+    chatIdRef.current = null;
+    setDatasets({});
+    setActiveDataset(null);
+    setFile(null);
+
     const loadChats = async () => {
       try {
         const q = query(collection(db, 'chats'), where('userId', '==', user.uid));
@@ -1527,7 +1563,7 @@ WARNING: The sample rows provided above are ONLY for schema reference. DO NOT at
 
   return (
     <div 
-      className="flex h-screen bg-bg-main font-sans text-white selection:bg-accent-primary/30"
+      className="fixed inset-0 flex h-dvh bg-bg-main font-sans text-white selection:bg-accent-primary/30 overflow-hidden"
       onDragEnter={(e) => {
         if (e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
           setIsDragging(true);
@@ -1750,7 +1786,7 @@ WARNING: The sample rows provided above are ONLY for schema reference. DO NOT at
 }
 
 const LoadingSpinner = () => (
-  <div className="flex h-screen w-full items-center justify-center bg-bg-main">
+  <div className="flex h-dvh w-full items-center justify-center bg-bg-main">
     <svg className="animate-spin h-10 w-10 text-accent-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -1816,7 +1852,7 @@ class AppErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex h-screen w-full flex-col items-center justify-center bg-bg-main text-white p-8 overflow-y-auto">
+        <div className="flex h-dvh w-full flex-col items-center justify-center bg-bg-main text-white p-8 overflow-y-auto">
           <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-2xl w-full max-w-3xl">
             <h1 className="text-2xl font-bold text-red-400 mb-4 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6" />

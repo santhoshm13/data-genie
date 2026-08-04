@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Menu, Sidebar as SidebarIcon, Share, Copy, FileSpreadsheet, 
   Wand2, ArrowDown, RefreshCw, ExternalLink, Plus, Mic, ArrowUp, 
-  AlertTriangle, Trash2, X, Square, Check
+  AlertTriangle, Trash2, X, Square, Check, Clock
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -52,7 +52,7 @@ export function ChatbotWidget({
 }) {
   
   return (
-    <div className="flex-1 flex flex-col h-screen overflow-hidden bg-bg-main font-sans relative">
+    <div className="flex-1 flex flex-col h-dvh overflow-hidden bg-bg-main font-sans relative">
       {/* Ambient Animated Particles / Wisps Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-[#6D28D9]/20 to-transparent opacity-60 blur-3xl rounded-full mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
@@ -92,7 +92,7 @@ export function ChatbotWidget({
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                  className="flex flex-col items-center justify-center h-full mt-12 text-center"
+                  className="flex flex-col items-center justify-center h-full text-center"
                 >
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -312,19 +312,22 @@ export function ChatbotWidget({
                 initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
                 className="bg-bg-panel border border-white/10 w-full max-w-sm sm:max-w-md rounded-[24px] shadow-2xl p-8 flex flex-col items-center text-center"
               >
-                <div className="w-16 h-16 bg-red-500/10 text-red-400 rounded-full flex items-center justify-center mb-5 border-[2px] border-red-500/20">
-                  <AlertTriangle className="w-8 h-8" />
+                <div className="w-16 h-16 bg-teal-500/10 text-teal-400 rounded-full flex items-center justify-center mb-5 border-[2px] border-teal-500/20">
+                  <Clock className="w-8 h-8" />
                 </div>
-                <h2 className="text-xl font-bold text-white mb-2 tracking-tight">We're Taking a Breather</h2>
-                <p className="text-gray-400 mb-8 text-sm leading-relaxed">
-                  We've reached our API limits. Please try again in a few minutes!
+                <h2 className="text-xl font-bold text-white mb-2 tracking-tight">Just a Moment</h2>
+                <p className="text-gray-400 mb-6 text-sm leading-relaxed">
+                  Our server takes a short nap after periods of inactivity to save resources. It's waking up now — this usually takes 30-60 seconds. Please wait a moment, then send your message again.
                 </p>
                 <button 
                   onClick={() => setShowQuotaModal(false)}
                   className="w-full py-3.5 bg-white text-black hover:bg-gray-200 rounded-xl font-bold transition-all shadow-md"
                 >
-                  Okay, I understand
+                  Okay, I'll wait
                 </button>
+                <p className="mt-4 text-[11px] text-gray-500 max-w-[280px]">
+                  This only happens after a period of no activity — once it's awake, it'll respond instantly for the rest of your session.
+                </p>
               </motion.div>
             </motion.div>
           )}
