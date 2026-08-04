@@ -256,6 +256,7 @@ export function ChatbotWidget({
                   if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
                     e.preventDefault();
                     if (!loading) {
+                      document.getElementById('chatbot-textarea')?.blur();
                       handleSend();
                     }
                   }
@@ -280,7 +281,14 @@ export function ChatbotWidget({
                 <motion.button 
                   aria-label={loading ? "Stop generating" : "Send message"}
                   whileTap={{ scale: (!input.trim() && !file && !loading) ? 1 : 0.95 }}
-                  onClick={loading ? handleStop : handleSend}
+                  onClick={() => {
+                    if (loading) {
+                      handleStop();
+                    } else {
+                      document.getElementById('chatbot-textarea')?.blur();
+                      handleSend();
+                    }
+                  }}
                   disabled={(!input.trim() && !file) && !loading}
                   className="w-9 h-9 flex items-center justify-center rounded-full shadow-lg disabled:opacity-50 disabled:grayscale transition-all relative overflow-hidden group"
                   style={{

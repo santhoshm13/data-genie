@@ -69,7 +69,8 @@ function Auth({ onAuthSuccess }) {
       }, 1500);
       
     } catch (err) {
-      setError(err.message.replace('Firebase: ', ''));
+      console.error('[Sign In Error]', err);
+      setError("We encountered an issue signing you in. Please check your credentials or try a different method.");
       setLoading(false);
     }
   };
@@ -90,7 +91,8 @@ function Auth({ onAuthSuccess }) {
         onAuthSuccess();
       }, 1500);
     } catch (err) {
-      setError(err.message.replace('Firebase: ', ''));
+      console.error('[Google Sign In Error]', err);
+      setError("We couldn't sign you in with Google. Please try again later.");
       setLoading(false);
     }
   };

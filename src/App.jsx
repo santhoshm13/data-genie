@@ -97,7 +97,8 @@ const TransformationWidget = ({ codeString, datasets, activeDatasetName }) => {
          setStatus('success');
        } catch (err) {
          setStatus('error');
-         setError(err.message);
+         console.error('[Transformation error]', err);
+         setError("Something went wrong while processing that transformation. This can happen with unusual data formats — try rephrasing your request or check that the relevant columns exist in your data.");
        }
     }, 100);
   }, [codeString, datasets, activeDatasetName, status]);
@@ -146,7 +147,8 @@ const TransformationWidget = ({ codeString, datasets, activeDatasetName }) => {
           }
         }
      } catch (err) {
-        setError(err.message);
+        console.error('[Save to Drive error]', err);
+        setError("Couldn't save to Google Drive right now. This is often a permissions or connection issue — please try again, and make sure you're signed in with Drive access.");
      } finally {
         setIsSavingDrive(false);
      }
@@ -1412,7 +1414,8 @@ WARNING: The sample rows provided above are ONLY for schema reference. DO NOT at
         }
       }
     } catch (err) {
-      showAlert("Import Error", err.message);
+      console.error('[Import Error]', err);
+      showAlert("Import Error", "We encountered a problem while reading the file. Please ensure it's a valid CSV/Excel file or Google Sheet and try again.");
       throw err;
     } finally {
       setLoading(false);
