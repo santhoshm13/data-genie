@@ -139,24 +139,29 @@ const LandingPage = ({ onGetStarted }) => {
             enableArrowNavigation={true}
             displayScrollbar={false}
             renderItem={(feature, index, isSelected) => (
-              <div className={`item ${isSelected ? 'selected' : ''} group relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center gap-4`}>
-                <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors">
+              <div 
+                className={`item ${isSelected ? 'selected' : ''} group relative overflow-hidden p-6 md:p-8 rounded-[28px] border transition-all duration-300 flex flex-col justify-center min-h-[190px] md:min-h-[220px]`}
+                style={{
+                  background: isSelected ? '#12121B' : '#0B0B10',
+                  borderColor: isSelected ? 'rgba(139, 92, 246, 0.5)' : 'rgba(255, 255, 255, 0.08)'
+                }}
+              >
+                {/* Background Large Watermark Icon matching screenshot */}
+                <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-10 opacity-[0.05] group-hover:opacity-[0.09] transition-opacity pointer-events-none">
+                  {React.cloneElement(feature.icon, { className: "w-40 h-40 md:w-52 md:h-52" })}
+                </div>
+
+                <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors shrink-0 relative z-10">
                   {feature.icon}
                 </div>
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-lg md:text-xl font-bold text-white tracking-tight group-hover:text-accent-primary transition-colors">
-                      {feature.title}
-                    </h3>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent-secondary">Feature 0{index + 1}</span>
-                  </div>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-
-                <ArrowRight className="w-4 h-4 text-accent-primary opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block shrink-0" />
+                <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 tracking-tight relative z-10 group-hover:text-accent-primary transition-colors">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-lg relative z-10">
+                  {feature.description}
+                </p>
               </div>
             )}
           />
