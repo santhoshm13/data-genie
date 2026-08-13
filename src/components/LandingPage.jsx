@@ -52,20 +52,19 @@ const LandingPage = ({ onGetStarted }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden selection:bg-accent-primary/30 font-sans relative flex flex-col">
-      {/* Background Ambient Glows */}
-      <div className="fixed top-0 left-1/4 w-[500px] h-[500px] bg-accent-primary/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none -translate-y-1/2"></div>
-      <div className="fixed bottom-0 right-1/4 w-[600px] h-[600px] bg-accent-secondary/15 rounded-full blur-[150px] mix-blend-screen pointer-events-none translate-y-1/4"></div>
+    <div className="min-h-screen bg-[#050505] text-white selection:bg-accent-primary/30 font-sans relative flex flex-col">
+      {/* Lightweight Ambient Backgrounds without GPU-heavy blur/mix-blend */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-primary/15 via-transparent to-transparent pointer-events-none"></div>
       
       {/* Navbar Area */}
       <motion.nav 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full px-6 py-6 md:px-12 flex justify-between items-center z-10"
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full px-6 py-6 md:px-12 flex justify-between items-center z-10 max-w-7xl mx-auto"
       >
         <div className="flex items-center gap-3">
-          <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]" draggable="false" />
+          <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-10 h-10 object-contain" draggable="false" />
           <span className="text-xl font-extrabold tracking-tight text-white hidden sm:block">DataGenie</span>
         </div>
         <button 
@@ -77,15 +76,14 @@ const LandingPage = ({ onGetStarted }) => {
       </motion.nav>
 
       {/* Main Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 pt-10 pb-20 z-10 w-full max-w-6xl mx-auto">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pt-8 pb-16 z-10 w-full max-w-6xl mx-auto">
         <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+          transition={{ duration: 0.6 }}
           className="mb-8 relative"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-accent-primary to-accent-secondary blur-[40px] opacity-30 rounded-full"></div>
-          <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-32 h-32 md:w-40 md:h-40 object-contain relative z-10 drop-shadow-[0_0_25px_rgba(139,92,246,0.8)] animate-genie-float" draggable="false" />
+          <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-28 h-28 md:w-36 md:h-36 object-contain relative z-10 animate-genie-float" draggable="false" />
         </motion.div>
 
         <motion.div 
@@ -114,56 +112,45 @@ const LandingPage = ({ onGetStarted }) => {
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button 
               onClick={onGetStarted}
-              className="group relative px-8 py-4 bg-white text-black font-bold rounded-2xl text-lg hover:scale-105 active:scale-95 transition-all duration-300 overflow-hidden flex items-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.15)]"
+              className="group relative px-8 py-4 bg-white text-black font-bold rounded-2xl text-lg hover:scale-105 active:scale-95 transition-transform duration-200 flex items-center gap-2 shadow-lg"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-accent-primary/20 to-accent-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <span>Get Started for Free</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
         </motion.div>
 
-        {/* Feature Cards Grid */}
-        <div className="w-full mt-12 md:mt-24 relative z-20 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        {/* Crisp, Lightweight Feature Cards Grid */}
+        <div className="w-full mt-8 md:mt-16 relative z-20 max-w-6xl mx-auto px-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
             {features.map((feature, index) => (
-              <motion.div 
+              <div 
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.1, type: "spring", bounce: 0.2 }}
-                className="bg-[#111111]/80 backdrop-blur-xl border border-white/5 hover:border-white/15 p-8 md:p-10 rounded-[28px] md:rounded-[36px] transition-colors group relative overflow-hidden flex flex-col"
+                className="bg-[#0D0D12] border border-white/10 hover:border-accent-primary/40 p-6 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 group flex flex-col justify-between shadow-lg"
               >
-                {/* Subtle gradient hover background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                
-                <div className="w-14 h-14 md:w-16 md:h-16 bg-white/[0.03] rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-white/5 group-hover:bg-white/[0.08] group-hover:scale-110 transition-all duration-300 shadow-inner relative z-10">
-                  {React.cloneElement(feature.icon, { className: "w-7 h-7 md:w-8 md:h-8 group-hover:text-white transition-colors duration-300" })}
+                <div>
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-xl flex items-center justify-center mb-5 border border-white/10 group-hover:bg-accent-primary/10 group-hover:border-accent-primary/30 transition-colors">
+                    {feature.icon}
+                  </div>
+                  
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">
+                    {feature.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
-                
-                <h3 className="text-2xl md:text-3xl font-bold text-white/90 mb-3 tracking-tight relative z-10 group-hover:text-white transition-colors">
-                  {feature.title}
-                </h3>
-                
-                <p className="text-gray-400 text-base md:text-lg leading-relaxed relative z-10 group-hover:text-gray-300 transition-colors">
-                  {feature.description}
-                </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <motion.footer 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-        className="w-full text-center py-8 text-xs text-gray-600 z-10"
-      >
+      <footer className="w-full text-center py-8 text-xs text-gray-600 z-10">
         <p>© {new Date().getFullYear()} DataGenie. Powered by Gemini AI.</p>
-      </motion.footer>
+      </footer>
     </div>
   );
 };
