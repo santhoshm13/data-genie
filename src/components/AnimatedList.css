@@ -1,0 +1,69 @@
+.scroll-list-container {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.scroll-list {
+  overflow-y: auto;
+  max-height: 520px;
+  padding: 1.25rem 0.5rem;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.top-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to bottom, rgba(5, 5, 5, 0.95), transparent);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+.bottom-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(to top, rgba(5, 5, 5, 0.95), transparent);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.item {
+  background: #0E0E14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.item.selected {
+  border-color: rgba(139, 92, 246, 0.6);
+  background: #14141F;
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.15);
+}
+
+.item-text {
+  margin: 0;
+  color: #fff;
+}

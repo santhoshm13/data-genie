@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, FileSpreadsheet, Wand2, BarChart2, MessageSquare, Database, Share2, Sparkles } from 'lucide-react';
+import AnimatedList from './AnimatedList';
 
 
 const LandingPage = ({ onGetStarted }) => {
@@ -87,7 +88,7 @@ const LandingPage = ({ onGetStarted }) => {
         </motion.div>
 
         <motion.div 
-          className="text-center max-w-3xl mb-12"
+          className="text-center max-w-3xl mb-10"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -120,50 +121,45 @@ const LandingPage = ({ onGetStarted }) => {
           </motion.div>
         </motion.div>
 
-        {/* Movable / Swipeable Feature Cards Carousel */}
-        <div className="w-full mt-6 md:mt-12 relative z-20 max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-between mb-4 px-1">
+        {/* Animated Scrollable Feature Cards List */}
+        <div className="w-full mt-4 md:mt-8 relative z-20 max-w-3xl mx-auto px-2">
+          <div className="flex items-center justify-between mb-3 px-2">
             <span className="text-xs font-semibold uppercase tracking-wider text-accent-primary flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" /> Key Capabilities
             </span>
-            <span className="text-xs text-gray-500 font-medium animate-pulse">
-              Swipe to explore →
+            <span className="text-xs text-gray-500 font-medium hidden sm:inline">
+              Scroll or use Arrow ↑↓ keys
             </span>
           </div>
 
-          {/* Touch-Movable Scroll Container */}
-          <div className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-6 pt-2 scrollbar-none -mx-4 px-4 md:mx-0 md:px-0 touch-pan-x">
-            {features.map((feature, index) => (
-              <motion.div 
-                key={index}
-                whileHover={{ y: -4, scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={onGetStarted}
-                className="snap-center shrink-0 w-[82vw] sm:w-[320px] md:w-[350px] bg-[#0E0E14] border border-white/10 hover:border-accent-primary/40 p-6 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 group flex flex-col justify-between shadow-xl relative overflow-hidden cursor-pointer"
-              >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-accent-primary/5 rounded-bl-full pointer-events-none group-hover:bg-accent-primary/10 transition-colors"></div>
-                <div>
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-5 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors shadow-inner">
-                    {feature.icon}
+          <AnimatedList
+            items={features}
+            onItemSelect={() => onGetStarted()}
+            showGradients={true}
+            enableArrowNavigation={true}
+            displayScrollbar={false}
+            renderItem={(feature, index, isSelected) => (
+              <div className={`item ${isSelected ? 'selected' : ''} group relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center gap-4`}>
+                <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors">
+                  {feature.icon}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-lg md:text-xl font-bold text-white tracking-tight group-hover:text-accent-primary transition-colors">
+                      {feature.title}
+                    </h3>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-accent-secondary">Feature 0{index + 1}</span>
                   </div>
-                  
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-accent-secondary mb-1.5 block">Feature 0{index + 1}</span>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2.5 tracking-tight group-hover:text-accent-primary transition-colors">
-                    {feature.title}
-                  </h3>
-                  
                   <p className="text-gray-400 text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-gray-400 group-hover:text-white transition-colors">
-                  <span>Try this feature</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-accent-primary" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                <ArrowRight className="w-4 h-4 text-accent-primary opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block shrink-0" />
+              </div>
+            )}
+          />
         </div>
       </main>
 
