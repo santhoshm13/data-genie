@@ -4,31 +4,34 @@ import { ArrowRight, FileSpreadsheet, Wand2, BarChart2, MessageSquare } from 'lu
 const LandingPage = ({ onGetStarted }) => {
   const features = [
     {
-      icon: <FileSpreadsheet className="w-5 h-5 text-accent-secondary" />,
+      icon: <FileSpreadsheet className="w-6 h-6 text-accent-secondary" />,
       title: "Seamless Imports",
-      description: "Connect CSV, Excel, or Google Sheets with zero configuration."
+      description: "Instantly connect and import your data from CSV, Excel, or live Google Sheets with zero configuration."
     },
     {
-      icon: <Wand2 className="w-5 h-5 text-accent-primary" />,
+      icon: <Wand2 className="w-6 h-6 text-accent-primary" />,
       title: "Magical Transformations",
-      description: "Clean, filter, and modify datasets using plain English."
+      description: "Clean, filter, and process messy datasets effortlessly using plain English commands."
     },
     {
-      icon: <BarChart2 className="w-5 h-5 text-accent-pink" />,
+      icon: <BarChart2 className="w-6 h-6 text-accent-pink" />,
       title: "Interactive Charts",
-      description: "Generate responsive line, bar, and pie charts instantly."
+      description: "Generate beautiful, responsive line, bar, and pie charts instantly to visualize your insights."
     },
     {
-      icon: <MessageSquare className="w-5 h-5 text-accent-green" />,
+      icon: <MessageSquare className="w-6 h-6 text-accent-green" />,
       title: "AI Chatbot Analyst",
-      description: "Chat directly with your data and get instant answers."
+      description: "Chat with your data. Ask complex questions and get instant, accurate analytical answers."
     }
   ];
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans flex flex-col justify-between">
-      {/* Top Header */}
-      <header className="w-full px-6 py-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto">
+      {/* Background Radial Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[350px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-primary/15 via-transparent to-transparent pointer-events-none"></div>
+
+      {/* Top Navbar */}
+      <header className="w-full px-6 py-6 md:px-12 flex justify-between items-center max-w-7xl mx-auto z-10">
         <div className="flex items-center gap-3">
           <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-10 h-10 object-contain" draggable="false" />
           <span className="text-xl font-extrabold tracking-tight text-white hidden sm:block">DataGenie</span>
@@ -42,49 +45,64 @@ const LandingPage = ({ onGetStarted }) => {
       </header>
 
       {/* Main Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 text-center max-w-4xl mx-auto w-full">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pt-4 pb-16 z-10 w-full max-w-6xl mx-auto text-center">
         <img 
           src="/logo_transparent.png" 
           alt="DataGenie Logo" 
-          className="w-24 h-24 md:w-32 md:h-32 object-contain mb-6" 
+          className="w-24 h-24 md:w-32 md:h-32 object-contain mb-6 animate-genie-float" 
           draggable="false" 
         />
 
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-          Your personal, magical <br />
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+          Your personal, magical <br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-primary">
             AI Data Analyst
           </span>
         </h1>
         
         <p className="text-gray-400 text-lg md:text-xl mb-8 max-w-2xl leading-relaxed">
-          Upload your messy spreadsheets, chat in plain English, and watch as DataGenie instantly cleans, visualizes, and analyzes your data.
+          Upload your messy spreadsheets, chat in plain English, and watch as DataGenie instantly cleans, visualizes, and analyzes your data. No coding required.
         </p>
         
         <button 
           onClick={onGetStarted}
-          className="px-8 py-4 bg-white text-black font-bold rounded-2xl text-lg hover:bg-gray-200 transition-colors flex items-center gap-2 shadow-lg mb-16"
+          className="px-8 py-4 bg-white text-black font-bold rounded-2xl text-lg hover:bg-gray-200 transition-all flex items-center gap-2 shadow-lg mb-16"
         >
           <span>Get Started for Free</span>
           <ArrowRight className="w-5 h-5" />
         </button>
 
-        {/* Clean Static Feature List (Simple Row View, No Cards, No Animations) */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left border-t border-white/10 pt-10">
+        {/* 100% Static, Non-Stacking Feature Cards Grid (Zero Overlap, Zero Scroll Animations) */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-5xl mx-auto">
           {features.map((feature, index) => (
-            <div key={index} className="flex flex-col gap-2">
-              <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center mb-1 border border-white/10">
+            <div 
+              key={index}
+              onClick={onGetStarted}
+              className="bg-[#0D0D12] border border-white/10 hover:border-accent-primary/40 p-8 rounded-[28px] relative overflow-hidden flex flex-col justify-center min-h-[200px] cursor-pointer transition-all duration-200 group shadow-md"
+            >
+              {/* Watermark Background Icon */}
+              <div className="absolute top-1/2 -translate-y-1/2 right-6 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity pointer-events-none">
+                {React.cloneElement(feature.icon, { className: "w-44 h-44 md:w-52 md:h-52" })}
+              </div>
+
+              <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors shrink-0 relative z-10">
                 {feature.icon}
               </div>
-              <h2 className="text-base font-bold text-white tracking-tight">{feature.title}</h2>
-              <p className="text-xs text-gray-400 leading-normal">{feature.description}</p>
+
+              <h2 className="text-2xl font-extrabold text-white mb-2 tracking-tight relative z-10 group-hover:text-accent-primary transition-colors">
+                {feature.title}
+              </h2>
+              
+              <p className="text-gray-400 text-sm md:text-base leading-relaxed relative z-10">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 text-xs text-gray-600">
+      <footer className="w-full text-center py-8 text-xs text-gray-600 z-10">
         <p>© {new Date().getFullYear()} DataGenie. Powered by Gemini AI.</p>
       </footer>
     </div>
