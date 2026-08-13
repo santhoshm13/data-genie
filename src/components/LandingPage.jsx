@@ -120,28 +120,48 @@ const LandingPage = ({ onGetStarted }) => {
           </motion.div>
         </motion.div>
 
-        {/* Crisp, Lightweight Feature Cards Grid */}
-        <div className="w-full mt-8 md:mt-16 relative z-20 max-w-6xl mx-auto px-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        {/* Movable / Swipeable Feature Cards Carousel */}
+        <div className="w-full mt-6 md:mt-12 relative z-20 max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-4 px-1">
+            <span className="text-xs font-semibold uppercase tracking-wider text-accent-primary flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" /> Key Capabilities
+            </span>
+            <span className="text-xs text-gray-500 font-medium animate-pulse">
+              Swipe to explore →
+            </span>
+          </div>
+
+          {/* Touch-Movable Scroll Container */}
+          <div className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory pb-6 pt-2 scrollbar-none -mx-4 px-4 md:mx-0 md:px-0 touch-pan-x">
             {features.map((feature, index) => (
-              <div 
+              <motion.div 
                 key={index}
-                className="bg-[#0D0D12] border border-white/10 hover:border-accent-primary/40 p-6 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 group flex flex-col justify-between shadow-lg"
+                whileHover={{ y: -4, scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onGetStarted}
+                className="snap-center shrink-0 w-[82vw] sm:w-[320px] md:w-[350px] bg-[#0E0E14] border border-white/10 hover:border-accent-primary/40 p-6 md:p-8 rounded-2xl md:rounded-3xl transition-all duration-300 group flex flex-col justify-between shadow-xl relative overflow-hidden cursor-pointer"
               >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-accent-primary/5 rounded-bl-full pointer-events-none group-hover:bg-accent-primary/10 transition-colors"></div>
                 <div>
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-xl flex items-center justify-center mb-5 border border-white/10 group-hover:bg-accent-primary/10 group-hover:border-accent-primary/30 transition-colors">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-5 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors shadow-inner">
                     {feature.icon}
                   </div>
                   
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-accent-secondary mb-1.5 block">Feature 0{index + 1}</span>
+                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2.5 tracking-tight group-hover:text-accent-primary transition-colors">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+                  <p className="text-gray-400 text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
-              </div>
+
+                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-semibold text-gray-400 group-hover:text-white transition-colors">
+                  <span>Try this feature</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-accent-primary" />
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
