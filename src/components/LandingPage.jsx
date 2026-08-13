@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, FileSpreadsheet, Wand2, BarChart2, MessageSquare, Database, Share2, Sparkles } from 'lucide-react';
-import AnimatedList from './AnimatedList';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 
 
 const LandingPage = ({ onGetStarted }) => {
@@ -121,50 +121,40 @@ const LandingPage = ({ onGetStarted }) => {
           </motion.div>
         </motion.div>
 
-        {/* Animated Scrollable Feature Cards List */}
-        <div className="w-full mt-4 md:mt-8 relative z-20 max-w-3xl mx-auto px-2">
-          <div className="flex items-center justify-between mb-3 px-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-accent-primary flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" /> Key Capabilities
-            </span>
-            <span className="text-xs text-gray-500 font-medium hidden sm:inline">
-              Scroll or use Arrow ↑↓ keys
-            </span>
-          </div>
+        {/* ScrollStack Cards Section */}
+        <div className="w-full mt-6 md:mt-12 relative z-20 max-w-4xl mx-auto px-4">
+          <ScrollStack
+            useWindowScroll={true}
+            itemDistance={30}
+            baseScale={0.88}
+            itemScale={0.04}
+            stackPosition="20%"
+            scaleEndPosition="10%"
+            className="w-full"
+          >
+            {features.map((feature, index) => (
+              <ScrollStackItem key={index} itemClassName="!bg-[#0D0D12] !border !border-white/10 !p-8 md:!p-10 !rounded-[32px] hover:border-accent-primary/40 transition-colors">
+                <div className="relative overflow-hidden h-full flex flex-col justify-center">
+                  {/* Background Large Watermark Icon */}
+                  <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-10 opacity-[0.04] pointer-events-none">
+                    {React.cloneElement(feature.icon, { className: "w-48 h-48 md:w-60 md:h-60" })}
+                  </div>
 
-          <AnimatedList
-            items={features}
-            onItemSelect={() => onGetStarted()}
-            showGradients={true}
-            enableArrowNavigation={true}
-            displayScrollbar={false}
-            renderItem={(feature, index, isSelected) => (
-              <div 
-                className={`item ${isSelected ? 'selected' : ''} group relative overflow-hidden p-6 md:p-8 rounded-[28px] border transition-all duration-300 flex flex-col justify-center min-h-[190px] md:min-h-[220px]`}
-                style={{
-                  background: isSelected ? '#12121B' : '#0B0B10',
-                  borderColor: isSelected ? 'rgba(139, 92, 246, 0.5)' : 'rgba(255, 255, 255, 0.08)'
-                }}
-              >
-                {/* Background Large Watermark Icon matching screenshot */}
-                <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-10 opacity-[0.05] group-hover:opacity-[0.09] transition-opacity pointer-events-none">
-                  {React.cloneElement(feature.icon, { className: "w-40 h-40 md:w-52 md:h-52" })}
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-5 border border-white/10 shrink-0 relative z-10">
+                    {feature.icon}
+                  </div>
+
+                  <h3 className="text-2xl md:text-4xl font-extrabold text-white mb-3 tracking-tight relative z-10">
+                    {feature.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 text-sm md:text-lg leading-relaxed max-w-xl relative z-10">
+                    {feature.description}
+                  </p>
                 </div>
-
-                <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors shrink-0 relative z-10">
-                  {feature.icon}
-                </div>
-
-                <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 tracking-tight relative z-10 group-hover:text-accent-primary transition-colors">
-                  {feature.title}
-                </h3>
-                
-                <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-lg relative z-10">
-                  {feature.description}
-                </p>
-              </div>
-            )}
-          />
+              </ScrollStackItem>
+            ))}
+          </ScrollStack>
         </div>
       </main>
 
