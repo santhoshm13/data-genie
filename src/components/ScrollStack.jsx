@@ -42,6 +42,16 @@ const ScrollStack = ({
     return parseFloat(value);
   }, []);
 
+  const getUntransformedOffsetTop = useCallback(element => {
+    let top = 0;
+    let curr = element;
+    while (curr && curr !== document.body && curr !== null) {
+      top += curr.offsetTop;
+      curr = curr.offsetParent;
+    }
+    return top;
+  }, []);
+
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
       return {
@@ -51,6 +61,7 @@ const ScrollStack = ({
       };
     } else {
       const scroller = scrollerRef.current;
+      if (!scroller) return { scrollTop: 0, containerHeight: window.innerHeight, scrollContainer: null };
       return {
         scrollTop: scroller.scrollTop,
         containerHeight: scroller.clientHeight,
@@ -61,18 +72,34 @@ const ScrollStack = ({
 
   const getElementOffset = useCallback(
     element => {
+      if (!element) return 0;
       if (useWindowScroll) {
-        const rect = element.getBoundingClientRect();
-        return rect.top + window.scrollY;
+        return getUntransformedOffsetTop(element);
       } else {
-        return element.offsetTop;
+        const scroller = scrollerRef.current;
+        if (!scroller) return getUntransformedOffsetTop(element);
+        return getUntransformedOffsetTop(element) - getUntransformedOffsetTop(scroller);
       }
     },
-    [useWindowScroll]
+    [useWindowScroll, getUntransformedOffsetTop]
   );
 
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
+
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      cardsRef.current.forEach((card, i) => {
+        if (!card) return;
+        card.style.transform = '';
+        card.style.filter = '';
+        if (i < cardsRef.current.length - 1) {
+          card.style.marginBottom = '24px';
+        }
+      });
+      return;
+    }
 
     isUpdatingRef.current = true;
 
@@ -187,13 +214,6 @@ const ScrollStack = ({
     const isMobile = window.innerWidth < 768;
 
     if (isMobile) {
-      const scrollTarget = useWindowScroll ? window : scrollerRef.current;
-      if (scrollTarget) {
-        scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
-        lenisRef.current = {
-          destroy: () => scrollTarget.removeEventListener('scroll', handleScroll)
-        };
-      }
       return;
     }
 
@@ -206,7 +226,7 @@ const ScrollStack = ({
         infinite: false,
         wheelMultiplier: 1,
         lerp: 0.1,
-        syncTouch: false, // Disabled syncTouch to prevent hanging
+        syncTouch: false,
         syncTouchLerp: 0.075
       });
 
@@ -271,18 +291,35 @@ const ScrollStack = ({
 
     cards.forEach((card, i) => {
       if (i < cards.length - 1) {
-        card.style.marginBottom = `${itemDistance}px`;
+        card.style.marginBottom = isMobile ? '24px' : `${itemDistance}px`;
       }
-      card.style.willChange = 'transform, filter';
-      card.style.transformOrigin = 'top center';
-      card.style.backfaceVisibility = 'hidden';
-      card.style.transform = 'translateZ(0)';
-      card.style.webkitTransform = 'translateZ(0)';
-      card.style.perspective = '1000px';
-      card.style.webkitPerspective = '1000px';
+      if (!isMobile) {
+        card.style.willChange = 'transform, filter';
+        card.style.transformOrigin = 'top center';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.transform = 'translateZ(0)';
+        card.style.webkitTransform = 'translateZ(0)';
+        card.style.perspective = '1000px';
+        card.style.webkitPerspective = '1000px';
+      } else {
+        card.style.willChange = '';
+        card.style.transform = '';
+        card.style.filter = '';
+      }
     });
 
     setupLenis();
+
+    if (useWindowScroll) {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    } else if (scroller) {
+      scroller.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
+    const handleResize = () => {
+      updateCardTransforms();
+    };
+    window.addEventListener('resize', handleResize);
 
     updateCardTransforms();
 
@@ -293,6 +330,13 @@ const ScrollStack = ({
       if (lenisRef.current) {
         lenisRef.current.destroy();
       }
+      if (useWindowScroll) {
+        window.removeEventListener('scroll', handleScroll);
+      } else if (scroller) {
+        scroller.removeEventListener('scroll', handleScroll);
+      }
+      window.removeEventListener('resize', handleResize);
+
       stackCompletedRef.current = false;
       cardsRef.current = [];
       transformsCache.clear();
@@ -311,14 +355,17 @@ const ScrollStack = ({
     useWindowScroll,
     onStackComplete,
     setupLenis,
-    updateCardTransforms
+    updateCardTransforms,
+    handleScroll
   ]);
 
   return (
-    <div className={`scroll-stack-scroller ${className}`.trim()} ref={scrollerRef}>
+    <div 
+      className={`scroll-stack-scroller ${useWindowScroll ? '' : 'use-scroller-overflow'} ${className}`.trim()} 
+      ref={scrollerRef}
+    >
       <div className="scroll-stack-inner">
         {children}
-        {/* Spacer so the last pin can release cleanly */}
         <div className="scroll-stack-end" />
       </div>
     </div>

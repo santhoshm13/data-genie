@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, FileSpreadsheet, Wand2, BarChart2, MessageSquare, Database, Share2, Sparkles } from 'lucide-react';
-import ScrollStack, { ScrollStackItem } from './ScrollStack';
+
 
 const LandingPage = ({ onGetStarted }) => {
   const containerVariants = {
@@ -123,37 +123,35 @@ const LandingPage = ({ onGetStarted }) => {
           </motion.div>
         </motion.div>
 
-        {/* Feature Stack Animation */}
-        <div className="w-full mt-8 md:mt-16 relative z-20 max-w-4xl mx-auto">
-          <ScrollStack
-            useWindowScroll={true}
-            itemDistance={40}
-            baseScale={0.85}
-            itemScale={0.05}
-            scaleEndPosition="15%"
-            className="w-full"
-          >
+        {/* Feature Cards Grid */}
+        <div className="w-full mt-12 md:mt-24 relative z-20 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {features.map((feature, index) => (
-              <ScrollStackItem key={index} itemClassName="!p-0 !bg-transparent !shadow-none !h-auto">
-                <div className="bg-gradient-to-b from-[#1A1A1D] to-bg-main backdrop-blur-2xl border border-white/10 hover:border-white/20 p-8 md:p-12 rounded-[40px] transition-all duration-500 group relative overflow-hidden shadow-2xl h-[350px] md:h-[400px] flex flex-col justify-center">
-                  
-                  {/* Background Large Icon */}
-                  <div className="absolute top-1/2 -translate-y-1/2 right-12 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity transform group-hover:scale-110 group-hover:-rotate-12 duration-700 pointer-events-none hidden md:block">
-                    {React.cloneElement(feature.icon, { className: "w-64 h-64" })}
-                  </div>
-
-                  <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-8 border border-white/10 group-hover:bg-white/10 transition-colors shadow-inner relative z-10">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4 tracking-tight relative z-10">{feature.title}</h3>
-                  <p className="text-gray-400 text-lg md:text-xl leading-relaxed max-w-2xl relative z-10">{feature.description}</p>
-                  
-                  {/* Subtle hover glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: index * 0.1, type: "spring", bounce: 0.2 }}
+                className="bg-[#111111]/80 backdrop-blur-xl border border-white/5 hover:border-white/15 p-8 md:p-10 rounded-[28px] md:rounded-[36px] transition-colors group relative overflow-hidden flex flex-col"
+              >
+                {/* Subtle gradient hover background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                
+                <div className="w-14 h-14 md:w-16 md:h-16 bg-white/[0.03] rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-white/5 group-hover:bg-white/[0.08] group-hover:scale-110 transition-all duration-300 shadow-inner relative z-10">
+                  {React.cloneElement(feature.icon, { className: "w-7 h-7 md:w-8 md:h-8 group-hover:text-white transition-colors duration-300" })}
                 </div>
-              </ScrollStackItem>
+                
+                <h3 className="text-2xl md:text-3xl font-bold text-white/90 mb-3 tracking-tight relative z-10 group-hover:text-white transition-colors">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-gray-400 text-base md:text-lg leading-relaxed relative z-10 group-hover:text-gray-300 transition-colors">
+                  {feature.description}
+                </p>
+              </motion.div>
             ))}
-          </ScrollStack>
+          </div>
         </div>
       </main>
 
