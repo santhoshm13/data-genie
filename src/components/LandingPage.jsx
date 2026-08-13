@@ -1,8 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, FileSpreadsheet, Wand2, BarChart2, MessageSquare, Database, Share2, Sparkles } from 'lucide-react';
-import ScrollStack, { ScrollStackItem } from './ScrollStack';
-
+import { ArrowRight, FileSpreadsheet, Wand2, BarChart2, MessageSquare } from 'lucide-react';
 
 const LandingPage = ({ onGetStarted }) => {
   const containerVariants = {
@@ -54,16 +52,11 @@ const LandingPage = ({ onGetStarted }) => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-accent-primary/30 font-sans relative flex flex-col">
-      {/* Lightweight Ambient Backgrounds without GPU-heavy blur/mix-blend */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-primary/15 via-transparent to-transparent pointer-events-none"></div>
+      {/* Background radial glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[350px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-primary/15 via-transparent to-transparent pointer-events-none"></div>
       
       {/* Navbar Area */}
-      <motion.nav 
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="w-full px-6 py-6 md:px-12 flex justify-between items-center z-10 max-w-7xl mx-auto"
-      >
+      <nav className="w-full px-6 py-6 md:px-12 flex justify-between items-center z-10 max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
           <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-10 h-10 object-contain" draggable="false" />
           <span className="text-xl font-extrabold tracking-tight text-white hidden sm:block">DataGenie</span>
@@ -74,21 +67,16 @@ const LandingPage = ({ onGetStarted }) => {
         >
           Sign In
         </button>
-      </motion.nav>
+      </nav>
 
       {/* Main Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 pt-8 pb-16 z-10 w-full max-w-6xl mx-auto">
-        <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8 relative"
-        >
-          <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-28 h-28 md:w-36 md:h-36 object-contain relative z-10 animate-genie-float" draggable="false" />
-        </motion.div>
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pt-4 pb-16 z-10 w-full max-w-6xl mx-auto">
+        <div className="mb-6 relative">
+          <img src="/logo_transparent.png" alt="DataGenie Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain relative z-10 animate-genie-float" draggable="false" />
+        </div>
 
         <motion.div 
-          className="text-center max-w-3xl mb-10"
+          className="text-center max-w-3xl mb-12"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -105,7 +93,7 @@ const LandingPage = ({ onGetStarted }) => {
           
           <motion.p 
             variants={itemVariants}
-            className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed"
           >
             Upload your messy spreadsheets, chat in plain English, and watch as DataGenie instantly cleans, visualizes, and analyzes your data. No coding required.
           </motion.p>
@@ -121,40 +109,32 @@ const LandingPage = ({ onGetStarted }) => {
           </motion.div>
         </motion.div>
 
-        {/* ScrollStack Cards Section */}
-        <div className="w-full mt-6 md:mt-12 relative z-20 max-w-4xl mx-auto px-4">
-          <ScrollStack
-            useWindowScroll={true}
-            itemDistance={30}
-            baseScale={0.88}
-            itemScale={0.04}
-            stackPosition="20%"
-            scaleEndPosition="10%"
-            className="w-full"
-          >
-            {features.map((feature, index) => (
-              <ScrollStackItem key={index} itemClassName="!bg-[#0D0D12] !border !border-white/10 !p-8 md:!p-10 !rounded-[32px] hover:border-accent-primary/40 transition-colors">
-                <div className="relative overflow-hidden h-full flex flex-col justify-center">
-                  {/* Background Large Watermark Icon */}
-                  <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-10 opacity-[0.04] pointer-events-none">
-                    {React.cloneElement(feature.icon, { className: "w-48 h-48 md:w-60 md:h-60" })}
-                  </div>
+        {/* 100% Native, Bulletproof Feature Cards List */}
+        <div className="w-full mt-4 md:mt-8 relative z-20 max-w-4xl mx-auto px-2 flex flex-col gap-6">
+          {features.map((feature, index) => (
+            <div 
+              key={index}
+              onClick={onGetStarted}
+              className="bg-[#0B0B10] border border-white/10 hover:border-accent-primary/40 p-6 md:p-8 rounded-[28px] transition-all duration-200 group relative overflow-hidden flex flex-col justify-center min-h-[180px] cursor-pointer shadow-lg"
+            >
+              {/* Background Large Watermark Icon */}
+              <div className="absolute top-1/2 -translate-y-1/2 right-6 md:right-10 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity pointer-events-none">
+                {React.cloneElement(feature.icon, { className: "w-40 h-40 md:w-56 md:h-56" })}
+              </div>
 
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-5 border border-white/10 shrink-0 relative z-10">
-                    {feature.icon}
-                  </div>
+              <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10 group-hover:bg-accent-primary/20 group-hover:border-accent-primary/40 transition-colors shrink-0 relative z-10">
+                {feature.icon}
+              </div>
 
-                  <h3 className="text-2xl md:text-4xl font-extrabold text-white mb-3 tracking-tight relative z-10">
-                    {feature.title}
-                  </h3>
-                  
-                  <p className="text-gray-400 text-sm md:text-lg leading-relaxed max-w-xl relative z-10">
-                    {feature.description}
-                  </p>
-                </div>
-              </ScrollStackItem>
-            ))}
-          </ScrollStack>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2 tracking-tight relative z-10 group-hover:text-accent-primary transition-colors">
+                {feature.title}
+              </h3>
+              
+              <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-lg relative z-10">
+                {feature.description}
+              </p>
+            </div>
+          ))}
         </div>
       </main>
 
